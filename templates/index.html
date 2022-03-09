@@ -1,0 +1,573 @@
+<!DOCTYPE>
+<hmtl>
+<head>
+    <title>Raspberino Control Center</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width-device-width, initial-scale=1" />
+    <link href="/static/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="/static/css/keen-dashboards.css" rel="stylesheet" />
+</head>
+
+<header>
+    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                
+                <a class="navbar-brand" href="/">
+                    <span class="glyphicon glyphicon-chevron-right"></span>
+                </a>
+                
+                <a class="navbar-brand" href="/">ED3 Control Center</a>
+            </div>
+              
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav navbar-left">
+                    <li><a href="/phone">Phone</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</header>
+
+<br />
+<br />
+    
+<body style="background: #f2f2f2">
+    
+    <div class="container-fluid">
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-danger">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        {{message}}
+                    </div>
+                {% endfor %}
+           {% endif %}
+        {% endwith %}
+        
+        </br>
+        </br>
+        
+        <!-- new row: -->
+        <div class="row">
+            <div class="col-md-4">
+                <div class="chart-wrapper">
+                    <div class="chart-title">
+                        
+                    </div>
+
+                    <div class="chart-stage" style="height: 300px; width:100%">
+                        <div style="text-align: center"> 
+                             
+                            <p>Blue percentage: <span id="blue_percentage"></span> </p>
+			    <p>Wall percentage: <span id="wall_percentage"></span> </p>    
+			    <p>Obstacle percentage: <span id="obstacle_percentage"></span> </p>
+			    <p>Gate percentage: <span id="gate_percentage"></span> </p> 
+			    </br>
+                            
+                            <button type="button" id="up_button" class="btn btn-default" style="width: 90px; height: 40px">Forward</button>
+                            
+                            <br />
+
+                            <div class="btn-group" role="group">
+                                <button type="button" id="left_button" class="btn btn-default" style="width: 90px; height: 40px">Left</button>
+                                <button type="button" id="stop_button" class="btn btn-danger" style="width: 90px; height: 40px">Stop</button>
+                                <button type="button" id="right_button" class="btn btn-default" style="width: 90px; height: 40px">Right</button>
+                            </div>
+                            <br />
+
+                            <button type="button" id="down_button" class="btn btn-default" style="width: 90px; height: 40">Backward</button>
+                            <br />
+
+                        </div>
+			
+                    </div>
+                    
+                    <div class="chart-notes">
+                        
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-4">
+                <div class="chart-wrapper">
+                    <div class="chart-title">
+                        
+                    </div>
+
+                    <div class="chart-stage" style="height: 300px; width:100%">
+                        <div style="text-align: center">
+                            
+			    <br />
+			    <div class="btn-group" role="group">
+                                <button type="button" id="liftup_button" class="btn btn-default" style="width: 90px; height: 40px">Lift Up</button>
+                                <button type="button" id="liftdown_button" class="btn btn-default" style="width: 90px; height: 40px">Lift Down</button>        
+                            </div>
+                            <br />
+			    <br />
+
+ 			    <div class="btn-group" role="group">
+                                <button type="button" id="drop_button" class="btn btn-default" style="width: 90px; height: 40px">Drop</button>
+                                <button type="button" id="hold_button" class="btn btn-default" style="width: 90px; height: 40px">Hold</button>        
+                            </div>
+                            <br />
+                            <br />
+                            
+                            <div class="btn-group" role="group">
+                                <button type="button" id="manual_button" class="btn btn-default" style="width: 90px; height: 40px">Manual</button>
+                                <button type="button" id="auto_button" class="btn btn-default" style="width: 90px; height: 40px">Auto</button>
+                            </div>
+                            </br>
+                            </br>
+                            
+                            <p>Current manual state: <span id="manual_state"></span> </p>
+                            <p>Current mode: <span id="mode"></span> </p>                           
+                            
+                            <br />
+                        </div>
+                    </div>
+                    
+                    <div class="chart-notes">
+                        
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-4">
+                <div class="chart-wrapper">
+                    <div class="chart-title">
+                        
+                    </div>
+
+                    <div class="chart-stage" style="height: 300px; width:100%">
+                        <div class="row">
+                            <div class="col-xs-6">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>State</th>
+                                        </tr>
+                                    </thead>
+                                    
+                                    <tbody>
+                                        <tr>
+                                            <td>1</td>
+                                            <td id="state_table_1"></td> 
+                                        </tr>
+                                        
+                                       <tr>
+                                            <td>2</td>
+                                            <td id="state_table_2"></td> 
+                                        </tr>
+                                        
+                                       <tr>
+                                            <td>3</td>
+                                            <td id="state_table_3"></td> 
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td>4</td>
+                                            <td id="state_table_4"></td> 
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td>5</td>
+                                            <td id="state_table_5"></td> 
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td>6</td>
+                                            <td id="state_table_6"></td> 
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            
+                            <div class="col-xs-6">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>State</th>
+                                        </tr>
+                                    </thead>
+                                    
+                                    <tbody>                                        
+                                       <tr>
+                                            <td>7</td>
+                                            <td id="state_table_7"></td> 
+                                        </tr>
+                                        
+                                       <tr>
+                                            <td>8</td>
+                                            <td id="state_table_8"></td> 
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td>9</td>
+                                            <td id="state_table_9"></td> 
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td>10</td>
+                                            <td id="state_table_10"></td> 
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td>11</td>
+                                            <td id="state_table_11"></td> 
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td>12</td>
+                                            <td id="state_table_12"></td> 
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="chart-notes">
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- new row: -->
+        <div class="row">
+            <div class="col-md-4">
+                <div class="chart-wrapper">
+                    <div class="chart-title">
+                        
+                    </div>
+
+                    <div class="chart-stage">
+                        <div style="text-align: center">
+                            <img src="/camera_normal" style="height: 360px" />
+                        </div>
+                    </div>
+                    
+                    <div class="chart-notes">
+                        
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-4">
+                <div class="chart-wrapper">
+                    <div class="chart-title">
+                        
+                    </div>
+
+                    <div class="chart-stage">
+                        <div style="text-align: center">
+                            <img src="/camera_mask" style="height: 360px"  />
+                        </div>
+                    </div>
+                    
+                    <div class="chart-notes">
+                        
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-4">
+                <div class="chart-wrapper">
+                    <div class="chart-title">
+                        
+                    </div>
+
+                    <div class="chart-stage">
+                        <div id="container_IR_0" style="height: 360px; width:100%">
+                        </div>
+                    </div>
+                    
+                    <div class="chart-notes">
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- new row: -->
+        <div class="row">  
+            <div class="col-md-4">
+                <div class="chart-wrapper">
+                    <div class="chart-title">
+                        
+                    </div>
+
+                    <div class="chart-stage">
+                        <div id="container_IR_1" style="height: 360px; width:100%">
+                        </div>
+                    </div>
+                    
+                    <div class="chart-notes">
+                        
+                    </div>
+                </div>
+            </div>
+            
+        
+        </div>
+
+
+        </div>
+    </div>
+    
+    <!-- external scripts: (the order DOES seem to matter) -->
+    <script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/socket.io.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/canvasjs.min.js') }}"></script>
+
+    <!-- create all graphs: -->
+    <script type="text/javascript" charset="utf-8">
+        var previous_data = 0;
+        var IR_0_data = 0;
+        var IR_1_data = 0;
+        var IR_2_data = 0;
+        var IR_Yaw_right_data = 0;
+        var Yaw_data = 0;
+        var p_part_data = 0;
+        var alpha_data = 0;
+        
+        window.onload = function () 
+        {
+            var updateInterval = 100; // 10 Hz
+        
+            var dps_IR_0 = [];
+            var dps_IR_1 = [];
+            
+            
+            var xval_IR_0 = 0;
+            var xval_IR_1 = 0;
+            
+
+            var chart_IR_0 = new CanvasJS.Chart("container_IR_0", {title: {text: "FRONT_SENSOR"}, data: [{type: "line", dataPoints: dps_IR_0}]});
+            var chart_IR_1 = new CanvasJS.Chart("container_IR_1", {title: {text: "RIGHT_SENSOR"}, data: [{type: "line", dataPoints: dps_IR_1}]});
+            
+            
+            var update_chart_IR_0 = function () 
+            {   
+				dps_IR_0.push({x: xval_IR_0, y: IR_0_data});
+				xval_IR_0++;
+                if (dps_IR_0.length > 100)
+                {
+                    dps_IR_0.shift(); // remove the first element if the array has gotten to big				
+                }
+                chart_IR_0.render();		
+            };
+            var update_chart_IR_1 = function () 
+            {   
+				dps_IR_1.push({x: xval_IR_1, y: IR_1_data});
+				xval_IR_1++;
+                if (dps_IR_1.length > 100)
+                {
+                    dps_IR_1.shift();				
+                }
+                chart_IR_1.render();		
+            };
+            
+            // generates first set of dataPoints:
+            update_chart_IR_0(); 
+            update_chart_IR_1(); 
+            
+
+            // update chart after specified time: 
+            setInterval(update_chart_IR_0, updateInterval); 
+            setInterval(update_chart_IR_1, updateInterval);
+                          
+        }
+        
+        function connect_handler()
+        {
+            socket.emit('my event', {data: 'I\'m connected!'});
+        }
+        
+        // buttons: 
+        function arrow_handler(arrow_data)
+        {
+            socket.emit("arrow_event", {data: arrow_data});
+        }
+        
+        function mode_handler(mode_data)
+        {
+            socket.emit("mode_event", {data: mode_data});
+        }
+        
+        
+        
+        // keyboard:    
+        function key_press_handler(event) 
+        {
+            var pressed_key_utf8 = event.keyCode;
+            switch (pressed_key_utf8) 
+            {
+                case 87:    // W key (up)
+                case 119:   // w key (up)
+                {
+                    if (previous_data !== 1) // only send data if it is new data (only send once per key press)
+                    {
+                        socket.emit("arrow_event", {data: 1});
+                        previous_data = 1;
+                    } 
+                    break;
+                }
+                
+                case 83:  // S key (down)
+                case 115:  // s key (down)
+                {
+                    if (previous_data !== 2)
+                    {
+                        socket.emit("arrow_event", {data: 2});
+                        previous_data = 2;
+                    } 
+                    break;
+                }
+                
+                case 68:  // D key (right)
+                case 100:  // d key (right)
+                {
+                    if (previous_data !== 3)
+                    {
+                        socket.emit("arrow_event", {data: 3});
+                        previous_data = 3;
+                    } 
+                    break;
+                }
+                
+                case 65:  // A key (left)
+                case 97:  // a key (left)
+                {
+                    if (previous_data !== 4)
+                    {
+                        socket.emit("arrow_event", {data: 4});
+                        previous_data = 4;
+                    } 
+                    break;
+                }
+ 
+                default:
+                {
+                    break;
+                }
+            }           
+        }
+        
+        function key_up_handler(event) 
+        {
+            var released_key_utf8 = event.keyCode;
+            switch (released_key_utf8) 
+            {
+                case 87:    // W key (up)
+                case 119:   // w key (up)
+                case 83:    // S key (down)
+                case 115:   // s key (down)
+                case 68:    // D key (right)
+                case 100:   // d key (right)
+                case 65:    // A key (left)
+                case 97:    // a key (left)
+                {
+                    socket.emit("arrow_event", {data: 0});
+                    previous_data = 0;
+                    break;
+                }
+ 
+                default:
+                {
+                   break; 
+                }       
+            }                
+        }
+        
+        function insert_into_state_table(new_state)
+        {
+            for (var i = 12; i > 1; --i)
+            {
+                var k = i - 1;
+                document.getElementById("state_table_" + i.toString()).innerHTML = document.getElementById("state_table_" + k.toString()).innerHTML;
+            }
+            
+            document.getElementById("state_table_1").innerHTML = new_state;
+        }
+        
+        function data_handler(sent_dict)
+        {       
+            socket.emit("control_event", {data: "Hello!"}); // tell the RPI that the wifi connection is still working
+            
+            IR_0_data = sent_dict["Front_Sensor"];
+            IR_1_data = sent_dict["Right_Sensor"];
+            
+	    
+           
+            document.getElementById("blue_percentage").innerHTML = sent_dict["blue_percentage"];
+	    document.getElementById("wall_percentage").innerHTML = sent_dict["wall_percentage"];
+	     document.getElementById("obstacle_percentage").innerHTML = sent_dict["obstacle_percentage"];
+	    document.getElementById("gate_percentage").innerHTML = sent_dict["gate_percentage"];
+            
+            stored_state = document.getElementById("state_table_1").innerHTML;
+            new_state = sent_dict["AUTO_STATE"];
+            if (new_state != stored_state)
+            {
+                insert_into_state_table(new_state);
+            }
+            
+            document.getElementById("manual_state").innerHTML = sent_dict["manual_state"];
+            document.getElementById("mode").innerHTML = sent_dict["mode"];
+        }
+
+        var socket = io.connect('http://' + document.domain + ':' + location.port);
+        socket.on('connect', connect_handler);
+        
+        socket.on("new_data", data_handler);
+        
+        // buttons: 
+        document.getElementById("up_button").addEventListener("mousedown", function () { arrow_handler(1) })  
+        document.getElementById("up_button").addEventListener("mouseup", function () { arrow_handler(0) }) 
+
+        document.getElementById("down_button").addEventListener("mousedown", function () { arrow_handler(2) });   
+        document.getElementById("down_button").addEventListener("mouseup", function () { arrow_handler(0) });  
+        
+        document.getElementById("right_button").addEventListener("mousedown", function () { arrow_handler(3) });   
+        document.getElementById("right_button").addEventListener("mouseup", function () { arrow_handler(0) });  
+        
+        document.getElementById("left_button").addEventListener("mousedown", function () { arrow_handler(4) });   
+        document.getElementById("left_button").addEventListener("mouseup", function () { arrow_handler(0) }); 
+
+	 
+	
+	document.getElementById("liftup_button").addEventListener("mousedown", function () { arrow_handler(13) });   
+        document.getElementById("liftup_button").addEventListener("mouseup", function () { arrow_handler(0) });
+	
+	document.getElementById("liftdown_button").addEventListener("mousedown", function () { arrow_handler(14) });   
+        document.getElementById("liftdown_button").addEventListener("mouseup", function () { arrow_handler(0) });  
+	
+	document.getElementById("drop_button").addEventListener("mousedown", function () { arrow_handler(15) });   
+         
+	
+	document.getElementById("hold_button").addEventListener("mousedown", function () { arrow_handler(16) });   
+        
+
+        document.getElementById("stop_button").addEventListener("mousedown", function () { arrow_handler(0) }); 
+
+        document.getElementById("manual_button_ph").addEventListener("mousedown", function () { mode_handler(11) })
+        document.getElementById("auto_button_ph").addEventListener("mousedown", function () { mode_handler(12) })       
+        
+        // keyboard:
+        document.onkeypress = key_press_handler;
+        document.onkeyup = key_up_handler;     
+    </script>
+</body>
+
+</html>
